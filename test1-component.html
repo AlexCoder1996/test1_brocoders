@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <!-- Creating custom component -->
+    <div id="test1component">
+        <div id="main-container">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+    
+        <div id="addColumn">
+            <span class="plus">+</span>
+        </div>
+    
+        <div id="addRow">
+            <span class="plus">+</span>
+        </div>
+    
+        <div id="delColumn">
+                <span class="minus">-</span>
+        </div>
+        
+        <div id="delRow">
+                <span class="minus">-</span>
+        </div>
+    </div>
+
+    
+    <script>
+        var localDocument = document.currentScript.ownerDocument;
+        var component1 = localDocument.getElementById("test1component");
+
+
+        var addColumnButton = localDocument.getElementById("addColumn");
+        var delColumnButton = localDocument.getElementById("delColumn");
+        
+        var addRowButton = localDocument.getElementById("addRow");
+        var delRowButton = localDocument.getElementById("delRow");
+
+        var countRows = 4;          //default number of Rows
+        var countColumns = 4;       //default number of Columns
+
+        updateHandlersOnItems();
+        //Adding and deleting COLUMNS
+        addColumnButton.addEventListener("click", function() {        
+            countColumns++; 
+            var mainContainer = document.getElementById("main-container");
+            mainContainer.style.gridTemplateColumns = `repeat(${countColumns}, 56px)`; 
+            mainContainer.style.width = parseInt(getComputedStyle(mainContainer).width) + 60 + "px";
+            addColumnButton.style.left = parseInt(getComputedStyle(addColumnButton).left) + 60 + "px";
+            for (var i = 0; i < countRows; i++) {  
+                var newItem = document.createElement('div');
+                newItem.className = "item";             
+                mainContainer.appendChild(newItem); 
+            }                          
+
+            updateHandlersOnItems();
+        });
+
+        delColumnButton.addEventListener("click", function() {
+            if (countColumns == 1) return;        
+            var mainContainer = document.getElementById("main-container");  
+            mainContainer.style.width = parseInt(getComputedStyle(mainContainer).width) - 60 + "px";
+            addColumnButton.style.left = parseInt(getComputedStyle(addColumnButton).left) - 60 + "px";
+            for (var i = 0; i < countRows; i++) {  
+                mainContainer.removeChild(mainContainer.lastElementChild);
+            }       
+            countColumns--;
+            mainContainer.style.gridTemplateColumns = `repeat(${countColumns}, 56px)`;
+            if (delColumnButton.style.transform == 'translateX(' + countColumns  * 60 + 'px)' ) {
+                delColumnButton.style.left = parseInt(getComputedStyle(delColumnButton).left) - 60 + "px";
+            }
+
+            updateHandlersOnItems();
+        });
+
+        //Adding and deleting ROWS
+        addRowButton.addEventListener("click", function() {        
+            countRows++; 
+            var mainContainer = document.getElementById("main-container");
+            mainContainer.style.gridTemplateColumns = `repeat(${countColumns}, 56px)`;
+            addRowButton.style.top = parseInt(getComputedStyle(addRowButton).top) + 60 + "px"; 
+            for (var i = 0; i < countColumns; i++) {  
+                var newItem = document.createElement('div');
+                newItem.className = "item";             
+                mainContainer.appendChild(newItem); 
+            }                          
+
+            updateHandlersOnItems();
+        });
+
+        delRowButton.addEventListener("click", function() {
+            if (countRows == 1) return;        
+            var mainContainer = document.getElementById("main-container");  
+            for (var i = 0; i < countColumns; i++) {  
+                mainContainer.removeChild(mainContainer.lastElementChild);
+            }       
+            countRows--;
+            mainContainer.style.gridTemplateColumns = `repeat(${countColumns}, 56px)`;
+            addRowButton.style.top = parseInt(getComputedStyle(addRowButton).top) - 60 + "px"; 
+            if (delRowButton.style.transform == 'translateY(' + countRows  * 60 + 'px)' ) {
+                delRowButton.style.top = parseInt(getComputedStyle(delRowButton).top) - 60 + "px";
+            }
+
+            updateHandlersOnItems();
+        });
+
+       
+        //Function for updating hamdlers on items when we adding or deleting rows and columns
+        function updateHandlersOnItems() {
+            var celItems = document.getElementsByClassName("item"); //collection of cells
+            Object.keys(celItems).forEach(element => {
+
+                celItems[element].onmouseover = function () {
+                    // console.log(this);      //html element
+                    // console.log(element);   //poistion of our item
+
+                    delColumnButton.style.left = '105px';
+                    delRowButton.style.top = '105px';
+
+                    //for animation delete-buttons
+                    var numberOfCol;
+                    var numberOfRow;
+
+                    if ( (+element + 1) <= countColumns) {
+                        numberOfCol = +element + 1;
+                    } else if ( (+element + 1) % countColumns == 0) {
+                        numberOfCol = countColumns;
+                    } else {
+                        numberOfCol = (+element + 1) % countColumns;
+                    }
+
+                    if ( (+element + 1) <= countColumns ) {
+                        numberOfRow = 1;
+                    } else if ( (+element + 1) % countColumns == 0) {
+                        numberOfRow = (+element + 1) / countColumns;
+                    } else {
+                        numberOfRow = Math.floor( (+element + 1) / countColumns ) + 1;
+                    }
+                    
+                    delColumnButton.style.transform = 'translateX(' + 60 * (numberOfCol-1) + 'px)';
+                    delRowButton.style.transform = 'translateY(' + 60 * (numberOfRow-1) + 'px)';
+                };
+
+            });
+        }
+
+        var mainContainer = localDocument.getElementById("main-container");
+
+        mainContainer.addEventListener("mouseover", function() {
+            updateHandlersOnItems();
+            if (countColumns !== 1) {
+                delColumnButton.style.visibility = 'visible';
+            }
+
+            if (countRows !== 1) {
+                delRowButton.style.visibility = 'visible';
+            }    
+        });
+
+        //Handlers for buttons
+        delColumnButton.addEventListener("mouseover", function() {
+            delColumnButton.style.visibility = 'visible';
+
+            if (countColumns == 1) {
+                delColumnButton.style.visibility = 'hidden';
+            }
+        });
+
+        delRowButton.addEventListener("mouseover", function() {
+            delRowButton.style.visibility = 'visible';
+
+            if (countRows == 1) {
+                delRowButton.style.visibility = 'hidden';
+            }
+        });
+
+        mainContainer.addEventListener("mouseout", function() { 
+                delColumnButton.style.visibility = 'hidden';
+                delRowButton.style.visibility = 'hidden';                      
+        });
+
+        delColumnButton.addEventListener("mouseout", function() {
+            delColumnButton.style.visibility = 'hidden';
+        });
+
+        delRowButton.addEventListener("mouseout", function() {
+            delRowButton.style.visibility = 'hidden';
+        });
+
+
+        // document.body.appendChild(component1);
+    </script>
+
+</body>
+</html>

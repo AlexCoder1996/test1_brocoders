@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    
+</head>
+<body>
+    <!-- Script for showinng custom component from import file -->
+    <script>
+        function show() {
+            var component1 = link.import.getElementById('test1component');
+            document.body.appendChild(component1);
+        }
+    </script>
+    <link rel="import" id="link" onload="show()"  href="test1-component.html">
+</body>
+</html>
