@@ -1,7 +1,10 @@
-class MySuperClass {
-    constructor(container) {
-        let div = document.getElementById(container);
+class MySuperClass extends HTMLElement{
+    constructor() {
+        super();
 
+        //creating shadow root
+        const shadow = this.attachShadow({mode: 'open'});
+        
         let superContainer = document.createElement('div');
         superContainer.id = "main-container";
 
@@ -25,29 +28,149 @@ class MySuperClass {
 
         item.className = "item";
 
+        // Creating CSS for custom component
+        let style = document.createElement('style');
+
+        style.textContent = `
+            body {
+                position: relative;
+            }
+            
+            #main-container {
+                position: absolute;
+                display: grid;
+                width: 236px;
+                grid-template-columns: repeat(4, 56px);
+                grid-column-gap: 4px;
+                grid-row-gap: 4px;
+                border: 1px solid #48aae6;
+                padding: 4px;
+                top: 100px;
+                margin-bottom: 20px;
+                left: 100px;
+            }
+            
+            .item {
+                width: 56px;
+                height: 56px;
+                background-color:#48aae6;
+            }
+            
+            #addColumn {
+                position: absolute;
+                top: 105px;
+                left: 350px;
+                width:56px;
+                height: 56px;
+                background-color: #f3a500;
+            }
+            
+            #addRow {
+                position: absolute;
+                top: 350px;
+                left: 105px;
+                width:56px;
+                height: 56px;
+                background-color: #f3a500;
+            }
+            
+            #delColumn, #delRow {
+                width:56px;
+                height: 56px;
+                background-color: #b20000;
+                visibility: hidden;
+                display: block;
+            }
+            
+            #delColumn:hover, #delRow:hover {
+                display: block;
+            }
+            
+            #delColumn {
+                position: absolute;
+                top: 40px;
+                left: 105px; 
+                
+            }
+            
+            #delRow {
+                position: absolute;
+                top: 105px;
+                left: 40px; 
+            
+            }
+            
+            #addColumn, #addRow {
+                transition-duration: 600ms;
+                transition-property: background-color;
+            }
+            
+            #addColumn:hover, #addRow:hover {
+                cursor: pointer;
+                background-color: #fcbe38;
+            }
+            
+            #delRow, #delColumn {
+                transition: transform 0.4s, background-color 0.4s, visibility 0.2s;
+            }
+            
+            #delRow:hover, #delColumn:hover {
+                cursor: pointer;
+                background-color: #b15252;
+            }
+            
+            .plus {
+                color: white;
+                font-size: 2em;
+                font-weight: bold;
+                display: block;
+                margin-top: 9px;
+                margin-left: 19px;
+            }
+            
+            .minus {
+                color: white;
+                font-size: 2em;
+                font-weight: bold;
+                display: block;
+                margin-top: 6px;
+                margin-left: 23px;
+                
+            }      
+        `;
+
+        
+        //Attaching the created elements to the shadow dom 
+        shadow.appendChild(style);
+        console.log(style.isConnected);
+        // shadow.appendChild(superContainer);
+
         for (var i = 0;i < 16; i++) {
             superContainer.appendChild(item.cloneNode());
         }
-        div.appendChild(superContainer);
-        div.appendChild(buttonAddCol);
-        div.appendChild(buttonDelCol);
-        div.appendChild(buttonAddRow);
-        div.appendChild(buttonDelRow);
+        shadow.appendChild(superContainer);
+        shadow.appendChild(buttonAddCol);
+        shadow.appendChild(buttonDelCol);
+        shadow.appendChild(buttonAddRow);
+        shadow.appendChild(buttonDelRow);
 
     }
 
 }
 
+customElements.define('my-component', MySuperClass);
 
-window.onload = new MySuperClass('container');
+//Access to shadow dom of custom component
+var root = document.querySelector('my-component').shadowRoot; 
+console.log(root);
 
-var addColumnButton = document.getElementById("addColumn");
-var delColumnButton = document.getElementById("delColumn");
+var addColumnButton = root.getElementById("addColumn");
+var delColumnButton = root.getElementById("delColumn");
 
-var addRowButton = document.getElementById("addRow");
-var delRowButton = document.getElementById("delRow");
+var addRowButton = root.getElementById("addRow");
+var delRowButton = root.getElementById("delRow");
 
-var mainContainer = document.getElementById("main-container");
+var mainContainer = root.getElementById("main-container");
 var countRows = 4;          //default number of Rows
 var countColumns = 4;       //default number of Columns
 
