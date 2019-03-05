@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 18" width="16" height="18">
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #ffffff } 
+	</style>
+	<g id="how-it-works">
+		<g id="steps">
+			<path id="arrow" class="shp0" d="M15,17.14v-16.28l-14.14,8.14z" />
+		</g>
+	</g>
+</svg>
