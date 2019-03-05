@@ -10,12 +10,13 @@
     <link rel="stylesheet" href="style.css">  
 </head>
 <body>
+  
     <div class="wrapper">
         <div class = "top-baner">
             <div class="top-baner-overlay">
 
             </div>
-            <header>
+            <header class="content-container">
                     <div class="logo">
                         <img src="images/logo-3.png" alt="logo">
                     </div>
@@ -34,7 +35,7 @@
                             </ul>       
                     </nav>
             </header>
-            <section class="main-text">
+            <section class="main-text content-container">
                 <h1>Znajdź  opiekuna</h1>
                 <h2>dla swoich najbliższych</h2>
                 <p>Skontaktuj się bezpośrednio z jedną z <span class="main-text-span">60,000 zarejestrowanych</span><br>
@@ -46,7 +47,7 @@
         <section class="top-search">
             <span>Want to care with Geriana? <a class="top-search-link" href="#"> Become a Caregiver</a></span>
         </section>
-        <section class="specialists">
+        <section class="specialists content-container">
             <h2 class="specialists-header">Specjaliści Różnych Kategorii</h2>
             <section class="specialists-wrapper">
                 <div class="specialist">
@@ -83,7 +84,7 @@
         </section>
         <section class="how-it-works">
             <div class="how-it-works-img"></div>
-            <div class="opeka-container">
+            <div class="opeka-container content-container">
                 <section class="opeka-main">
                     <h2 class="opeka-header">Jak Działamy
                             dla
@@ -91,28 +92,179 @@
                             Opieki</h2>
                     <button class="opeka-btn">ZNAJDŹ OPIEKUNKĘ</button>
                 </section>
-                <section class="opeka-steps">
-                    <img src="images/steps.svg" alt="">
-                </section>
+                <div class="opeka-steps">
+                    <div class="step step-1">
+                        <div class="step-logo">
+                                <img src="images/step1.svg" alt="">
+                        </div>
+                        
+                        <div class="step-content">
+                            <h3>Search a Caregiver</h3>
+                            <p>Ustalasz kryteria wyboru i 
+                                    wyszukujesz opiekuna z 
+                                    wymaganymi kwalifikacjami.</p>
+                        </div>
+                        <img class="connection-arrow" src="images/connection-arrow.svg" alt="">
+                    </div>
+                    <div class="step step-2">
+                        <img class="step-2-arrow"  src="images/connection-arrow 2.svg" alt="">
+                          <div class="step-content">
+                                <h3>Select a Caregiver</h3>
+                                <p>Decydujesz na podstawie
+                                        weryfikacji profilu i opinii inyych
+                                        osób o danej opiekunce.
+                                        Nawiązujesz współpracę z
+                                        wybraną osobą</p>
+                          </div>
+                            
+                            <div class="step-logo">
+                                <img src="images/step2.svg" alt="">
+                            </div>
+                            <img class="arrow-1" src="images/arrow.svg" alt="">
+                    </div>
+                    <div class="step step-3">
+                            <img class="arrow-2" src="images/arrow 2.svg" alt="">
+                            <div class="step-logo">
+                                    <img src="images/step3.svg" alt="">
+                                </div>
+                            <div class="step-content">
+                                <h3>Test Period</h3>
+                                <p>Opiekun rozpoczyna okres próbny 
+                                        i jeśli jesteście zadowoleni, 
+                                        zostaje na dłużej.</p>
+                            </div>    
+                            
+                            <img class="step-3-arrow" src="images/connection-arrow.svg" alt="">
+                    </div>
+                    <div class="step step-4">
+                            <div class="step-content">
+                                <h3>Pay after Start</h3>
+                                <p>Opiekun dostaje wynagrodzenie
+                                        dopiero po rozpoczęciu pracy. Po
+                                        zakonczeniu współpracy
+                                        wystawiasz opiekunowi opinię.</p>
+                            </div>
+                            
+                            <div class="step-logo">
+                                <img src="images/step4.svg" alt="">
+                            </div>
+                            <img class="arrow-3" src="images/arrow.svg" alt="">
+                    </div>
+                </div>
             </div>
         </section>
         <section class="recalls">
             <div class="recalls-img"></div>
-            <div class="recalls-main">
+            <div class="recalls-main content-container">
                 <h2 class="recalls-header">What do our Clients Say?</h2>
                 <section class="recalls-wrapper">
-                    <img src="images/recall-1.svg" alt="" class="recall">
-                    <img src="images/recall-2.svg" alt="" class="recall">
-                    <img src="images/recall-3.svg" alt="" class="recall">
-                    <img src="images/recall-1.svg" alt="" class="recall">
-                    <img src="images/recall-2.svg" alt="" class="recall">
-                    <img src="images/recall-3.svg" alt="" class="recall">
+                    <div class="recall">
+                        <div class="recall-main">
+                            <p>Moja mama zachorowała jakiś czas temu i nie jest 
+                                już zupełnie samodzielna. Sama przestałam dawac 
+                                radę zajmować się własnym domem ..</p>
+                        </div>
+                        <div class="profile">
+                            <div class="name-profile">
+                                <h4>Aneta, 39l</h4>
+                                <span class="client">Service provider</span>
+                            </div>
+                            
+                            <div class="user-icon">
+                                    <img src="images/user1-pic.png" alt="" class="profile-icon">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recall">
+                        <div class="recall-main">
+                            <p>Jestem zadowolona z korzystania z portalu. Nic 
+                                mnie to nie kosztuje, a mam dostęp do ogłoszeń o 
+                                pracy z Polski i zagraicy. Byłam już w pracy ..</p>
+                        </div>
+                        <div class="profile">
+                            <div class="name-profile">
+                                <h4>Katarzyna, 51 lat</h4>
+                                <span class="client">Client</span>
+                            </div>
+                            <div class="user-icon">
+                                <img src="images/beth-solano-321063.png" alt="" class="profile-icon">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recall">
+                        <div class="recall-main">
+                            <p>Moja mama zachorowała jakiś czas temu i nie jest 
+                                już zupełnie samodzielna. Sama przestałam dawac 
+                                radę zajmować się własnym domem ..</p>
+                        </div>
+                        <div class="profile">
+                            <div class="name-profile">
+                                <h4>Aneta, 39l</h4>
+                                <span class="client">Service provider</span>
+                            </div>
+                            
+                            <div class="user-icon">
+                                    <img src="images/user1-pic.png" alt="" class="profile-icon">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recall">
+                        <div class="recall-main">
+                            <p>Moja mama zachorowała jakiś czas temu i nie jest 
+                                już zupełnie samodzielna. Sama przestałam dawac 
+                                radę zajmować się własnym domem ..</p>
+                        </div>
+                        <div class="profile">
+                            <div class="name-profile">
+                                <h4>Aneta, 39l</h4>
+                                <span class="client">Service provider</span>
+                            </div>
+                            
+                            <div class="user-icon">
+                                    <img src="images/user1-pic.png" alt="" class="profile-icon">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recall">
+                        <div class="recall-main">
+                            <p>Jestem zadowolona z korzystania z portalu. Nic 
+                                mnie to nie kosztuje, a mam dostęp do ogłoszeń o 
+                                pracy z Polski i zagraicy. Byłam już w pracy ..</p>
+                        </div>
+                        <div class="profile">
+                            <div class="name-profile">
+                                <h4>Katarzyna, 51 lat</h4>
+                                <span class="client">Client</span>
+                            </div>
+                            <div class="user-icon">
+                                <img src="images/beth-solano-321063.png" alt="" class="profile-icon">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recall">
+                        <div class="recall-main">
+                            <p>Moja mama zachorowała jakiś czas temu i nie jest 
+                                już zupełnie samodzielna. Sama przestałam dawac 
+                                radę zajmować się własnym domem ..</p>
+                        </div>
+                        <div class="profile">
+                            <div class="name-profile">
+                                <h4>Aneta, 39l</h4>
+                                <span class="client">Service provider</span>
+                            </div>
+                            
+                            <div class="user-icon">
+                                    <img src="images/user1-pic.png" alt="" class="profile-icon">
+                            </div>
+                        </div>
+                    </div>
+                    
                 </section>
             </div>
         </section>
         <section class="pref">
                 <div class="pref-img"></div>
-                <div class="pref-container">
+                <div class="pref-container content-container">
                     <section class="pref-list">
                         <div class="list-item"></div>
                         <p>10,000 zarejestrowanych opiekunów czeka na bezpośredni 
@@ -141,9 +293,8 @@
                             <h2>Nasze Mocne
                                     Strony</h2>
                             <button class="pref-btn">ZNAJDŹ OPIEKUNKĘ</button>
-                            <img src="images/logo-shape.svg" alt="">
+                            
                     </section>
-                    
                 </div>
         </section>
         <section class="call-us">
@@ -152,36 +303,38 @@
                 <button>Call +48 567 365 485</button>        
         </section>
         <footer>
-            <div class="main">
-                <div class="footer-logo">
-                        <img src="images/logo-3.png" alt="logo">
+            <div class="content-container">
+                <div class="main">
+                    <div class="footer-logo">
+                            <img src="images/logo-3.png" alt="logo">
+                    </div>
+                    <div class="follow">
+                        <span>Follow Us</span>
+                        <img src="images/FB-icon.png" alt="">
+                        <img src="images/TW-icon.png" alt="">
+                        <img src="images/in-icon.png" alt="">
+                    </div>
+                    <span class="rights">© 2018 Geriana. All rights reserved</span>
                 </div>
-                <div class="follow">
-                    <span>Follow Us</span>
-                    <img src="images/FB-icon.png" alt="">
-                    <img src="images/TW-icon.png" alt="">
-                    <img src="images/in-icon.png" alt="">
+                <div class="navigation">
+                    <section>
+                        <h3>O portalu</h3>
+                        <p>Kim jesteśmy</p>
+                        <p>O nas w mediach</p>
+                        <p>Zasady i regulaminy</p>
+                    </section>
+                    <section>
+                        <h3>Współpraca</h3>
+                        <p>Zostań naszym partnerem</p>
+                        <p>Praca</p>
+                    </section>
+                    <section>
+                        <h3>Centrum Pomocy</h3>
+                        <p>Opiekunowie</p>
+                        <p>Poszukujący opieki</p>
+                        <p>Kontakt</p>
+                    </section>
                 </div>
-                <span class="rights">© 2018 Geriana. All rights reserved</span>
-            </div>
-            <div class="navigation">
-                <section>
-                    <h3>O portalu</h3>
-                    <p>Kim jesteśmy</p>
-                    <p>O nas w mediach</p>
-                    <p>Zasady i regulaminy</p>
-                </section>
-                <section>
-                    <h3>Współpraca</h3>
-                    <p>Zostań naszym partnerem</p>
-                    <p>Praca</p>
-                </section>
-                <section>
-                    <h3>Centrum Pomocy</h3>
-                    <p>Opiekunowie</p>
-                    <p>Poszukujący opieki</p>
-                    <p>Kontakt</p>
-                </section>
             </div>
         </footer>
     </div>  
