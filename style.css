@@ -985,6 +985,12 @@ footer .main {
     }
 }
 
+@media (max-width: 800px) {
+    .header-btn-container {
+        display: none;
+    }
+}
+
 @media (max-width: 780px) {
 
     .main-text h1 {
@@ -1061,17 +1067,6 @@ footer .main {
     .main-text p {
         font-size: 18px;
         line-height: 20px;
-    }
-
-    .header-btn-container {
-        flex-direction: column;
-        margin-top: 30px;
-        width: 150px;
-    }
-
-    .header-btn {
-        margin-top: 10px;
-        font-size: 12px;
     }
 
 }
