@@ -1,0 +1,9 @@
+.square {
+  margin-top: 1px;
+  margin-left: 1px;
+  margin-bottom: 1px;
+  margin-right: 1px;
+  background: #48aae6;
+  text-align: center;
+  color: white;
+}
