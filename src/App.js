@@ -6,12 +6,6 @@ class App extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {
-      initialWidth: 4,
-      initialHeight: 4,
-      cellSize: 50
-    }
-
     // this.onMouseUp = this.onMouseUp.bind(this);
     // this.onDragStart = this.onDragStart.bind(this);
 
@@ -48,9 +42,9 @@ class App extends React.PureComponent {
   //   });
   // }
 
-  onDragStart() {
-    return false;
-  }
+  // onDragStart() {
+  //   return false;
+  // }
 
   render() {
     return (
@@ -67,9 +61,9 @@ class App extends React.PureComponent {
       // }}
       >
         <Board 
-          initialWidth={this.state.initialWidth} 
-          initialHeight={this.state.initialHeight}
-          cellSize={this.state.cellSize} 
+          initialWidth="4" 
+          initialHeight="4"
+          cellSize="50"
         />
       </div>
     );
