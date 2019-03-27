@@ -3,75 +3,115 @@ import Button from "./Button.js";
 import Square from "./Square.js";
 import "./Board.css";
 
-class Board extends React.Component {
+class Board extends React.PureComponent {
   constructor(props) {
     super(props);
-
+  
     this.state = {
-      width: +this.props.initialWidth || 4,
-      height: +this.props.initialHeight || 4,
-      cellSize: parseInt(this.props.cellSize) || +"50",
+      width: +this.props.initialWidth,
+      height: +this.props.initialHeight,
+      cellSize: +this.props.cellSize,
       curCol: null,
       curRow: null,
       visibilityDelColBtn: 'hidden',
       visibilityDelRowBtn: 'hidden',
-      delCol: [],
-      delRow: []
+      matrix: []
     };
+ 
+    this.handleAddRow = this.handleAddRow.bind(this);
+    this.handleAddColumn = this.handleAddColumn.bind(this);
+    this.handleDelRowMouseOut = this.handleDelRowMouseOut.bind(this);
+    this.handleDelRowMouseOver = this.handleDelRowMouseOver.bind(this);
+    this.handleDelRow = this.handleDelRow.bind(this);
+    this.handleDelColMouseOut = this.handleDelColMouseOut.bind(this);
+    this.handleDelColMouseOver = this.handleDelColMouseOver.bind(this);
+    this.handleDelColumn = this.handleDelColumn.bind(this);
+    this.handleSquareMouseOut = this.handleSquareMouseOut.bind(this);
+
+  }
+
+  componentWillMount() {
+    const width = +this.props.initialWidth;
+    const height = +this.props.initialHeight;
+    let matrix = [];
+    
+    for (let i = 0; i < height; i++) {
+      matrix[i] = [];
+      for (let j = 0; j < width; j++) { 
+        matrix[i][j] = ( (+i+1) + '/' + (j+1));
+      }
+    }
+    
+    this.setState({matrix: matrix});
+ }
+  static defaultProps = {
+    initialWidth: 4,
+    initialHeight: 4,
+    cellSize: 50
   }
 
   handleDelRow() {
-    let height;
-    height = this.state.height;
+    const { height, curRow, matrix } = this.state;
+
     if (height <= 1) {
       this.setState({visibilityDelRowBtn: 'hidden'});
       return;
     }
-    height -= 1;
-    let delRow = this.state.delRow.concat([this.state.curRow])
-    this.setState({ 
-      height: height,
-      delRow: delRow
-    });
+    this.setState({ height: height - 1 });
+    let newMatrix = matrix;
+    newMatrix.splice(curRow, 1);
+    this.setState({ matrix: newMatrix });
 
-    if (this.state.curRow === height) {
+    if (curRow === height) {
       this.setState({visibilityDelRowBtn: 'hidden'})
     }
   }
 
   handleDelColumn() {
+    const { width, curCol, matrix, height } = this.state;
 
-    let width = this.state.width;
     if (width <= 1) {
-      this.setState({visibilityDelColBtn: 'hidden'})
+      this.setState({visibilityDelColBtn: 'hidden' })
       return;
     }
-    width -= 1;
 
-    let delCol = this.state.delCol.concat([this.state.curCol]);
+    for (let i = 0; i < height; i++) {
+      matrix[i].splice(curCol, 1);
+    }
 
-    this.setState({
-        width: width,
-        delCol: delCol
-      });
+    this.setState({ 
+      width: width - 1,
+      matrix: matrix 
+     });
 
-    if (this.state.curCol === width) {
+    if (curCol === width) {
       this.setState({visibilityDelColBtn: 'hidden'})
     }
+  }
+
+  createMatrix(isAddRow, isAddCol) {
+    const { width, height } = this.state;
+    let matrix = [];
+    
+    for (let i = 0; i < +height + isAddRow; i++) {
+      matrix[i] = [];
+      for (let j = 0; j < +width + isAddCol; j++) { 
+        matrix[i][j] = ( (+i+1) + '/' + (j+1));
+      }
+    }
+    
+    this.setState({matrix: matrix});
   }
 
   handleAddColumn() {
-    this.setState({
-      width: this.state.width + 1,
-      delCol: []
-    });
+    this.setState({ width: this.state.width + 1 });
+    this.createMatrix(false, true);
+    
   }
 
   handleAddRow() {
-    this.setState({ 
-      height: this.state.height + 1,
-      delRow: []
-    });
+    this.setState({ height: this.state.height + 1 });
+    this.createMatrix(true, false);
   }
 
   handleSquareMouseOver(row, col) {
@@ -83,8 +123,10 @@ class Board extends React.Component {
       this.setState({visibilityDelRowBtn: 'visible'});
     }
 
-    this.setState({ curCol: col });
-    this.setState({ curRow: row });
+    this.setState({ 
+      curCol: col,
+      curRow: row 
+    });    
   }
 
   handleSquareMouseOut() {
@@ -111,31 +153,45 @@ class Board extends React.Component {
   }
 
   renderSquares() {
+    const { cellSize, height, width, matrix } = this.state;
     let squares = [];
+    
     //  i - row, j - column
-    for (let i = 0; i < this.state.height; i++) {
-      for (let j = 0; j < this.state.width; j++) {
+    for (let i = 0; i < height; i++) {
+      for (let j = 0; j < width; j++) {
         squares.push(
           <Square
-            key={[i, j]}
-            index={(i + 1) + '/' + (j + 1)}
-            cellSize={this.state.cellSize}
+            key={matrix[i][j]}
+            cellSize={cellSize}
             onMouseOver={this.handleSquareMouseOver.bind(this, i, j)}
-            onMouseOut={this.handleSquareMouseOut.bind(this)}
+            onMouseOut={this.handleSquareMouseOut}
+            children={matrix[i][j]}
           />
         );
       }
     }
+    
     return squares;
+ 
   }
 
   render() {
-    let widthBoard = this.state.width * this.state.cellSize + (this.state.width - 1) * 2 + 2;
-    let heightBoard = this.state.height * this.state.cellSize + (this.state.height - 1) * 2 + 2;
-    let marginLeft = this.state.cellSize + 10;
+    const { width,
+          height, 
+          cellSize, 
+          curCol, 
+          curRow, 
+          visibilityDelColBtn, 
+          visibilityDelRowBtn 
+        } = this.state
+        
+    let widthBoard = width * cellSize + (width - 1) * 2 + 2;
+    let heightBoard = height * cellSize + (height - 1) * 2 + 2;
+    let marginLeft = cellSize + 10;
     let marginTop = marginLeft;
-    let leftDelBtn = marginLeft + 2 + (this.state.curCol) * (this.state.cellSize + 2) + 'px';
-    let topDelBtn = (this.state.curRow) * (this.state.cellSize + 2) + 'px';
+    let leftDelBtn = marginLeft + 2 + (curCol) * (cellSize + 2);
+    let topDelBtn = (curRow) * (cellSize + 2);
+    
     return (
       <div>
         <div
@@ -150,43 +206,41 @@ class Board extends React.Component {
           {this.renderSquares()}
         </div>
         <Button
-          visibility={this.state.visibilityDelColBtn}
+          visibility={visibilityDelColBtn}
           className="delColumn"
-          sign="-"
-          cellSize={this.state.cellSize}
-          onClick={this.handleDelColumn.bind(this)}
-          onMouseOver={this.handleDelColMouseOver.bind(this)}
-          onMouseOut={this.handleDelColMouseOut.bind(this)}
-          top={-marginTop + 8 + "px"}
+          cellSize={cellSize}
+          onClick={this.handleDelColumn}
+          onMouseOver={this.handleDelColMouseOver}
+          onMouseOut={this.handleDelColMouseOut}
+          top={-marginTop + 8}
           left={leftDelBtn}
+          children={"-"}
         />
         <Button
-          visibility={this.state.visibilityDelRowBtn}
+          visibility={visibilityDelRowBtn}
           className="delRow"
-          sign="-"
-          cellSize={this.state.cellSize}
-          onClick={this.handleDelRow.bind(this)}
-          onMouseOver={this.handleDelRowMouseOver.bind(this)}
-          onMouseOut={this.handleDelRowMouseOut.bind(this)}
+          cellSize={cellSize}
+          onClick={this.handleDelRow}
+          onMouseOver={this.handleDelRowMouseOver}
+          onMouseOut={this.handleDelRowMouseOut}
           top={topDelBtn}
+          children={"-"}
         />
         <Button
-          visibility={this.state.visibilityAddColBtn}
           className="addColumn"
-          sign="+"
-          cellSize={this.state.cellSize}
-          onClick={this.handleAddColumn.bind(this)}
-          left={widthBoard + marginLeft + 4 + "px"}
-          top={"2px"}
+          cellSize={cellSize}
+          onClick={this.handleAddColumn}
+          left={widthBoard + marginLeft + 4}
+          top={2}
+          children={"+"}
         />
         <Button
-          visibility={this.state.visibilityAddRowBtn}
           className="addRow"
-          sign="+"
-          cellSize={this.state.cellSize}
-          onClick={this.handleAddRow.bind(this)}
-          top={heightBoard + 4 + "px"}
-          left={marginLeft + 2 + "px"}
+          cellSize={cellSize}
+          onClick={this.handleAddRow}
+          top={heightBoard + 4}
+          left={marginLeft + 2}
+          children={"+"}
         />
       </div>
     );

@@ -7,6 +7,7 @@
   line-height: 200%;
   font-size: 150%;
   border: none;
+  z-index: 3;
 }
 
 button:active, button:focus {
