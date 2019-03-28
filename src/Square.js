@@ -9,7 +9,8 @@ class Square extends React.PureComponent {
         className="square"
         style={{ 
           width: this.props.cellSize + 'px',
-          height: this.props.cellSize + 'px' 
+          height: this.props.cellSize + 'px',
+          lineHeight: this.props.cellSize + 'px'
         }}
         onMouseOver={this.props.onMouseOver}
         onMouseOut={this.props.onMouseOut}

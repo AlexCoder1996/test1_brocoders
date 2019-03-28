@@ -4,6 +4,13 @@ import Square from "./Square.js";
 import "./Board.css";
 
 class Board extends React.PureComponent {
+
+  static defaultProps = {
+    initialWidth: 4,
+    initialHeight: 4,
+    cellSize: 50
+  }
+
   constructor(props) {
     super(props);
   
@@ -13,21 +20,13 @@ class Board extends React.PureComponent {
       cellSize: +this.props.cellSize,
       curCol: null,
       curRow: null,
-      visibilityDelColBtn: 'hidden',
-      visibilityDelRowBtn: 'hidden',
+      isDelColDis: false,
+      isDelRowDis: false,
+      visibilityDelColBtn: false,
+      visibilityDelRowBtn: false,
       matrix: []
     };
  
-    this.handleAddRow = this.handleAddRow.bind(this);
-    this.handleAddColumn = this.handleAddColumn.bind(this);
-    this.handleDelRowMouseOut = this.handleDelRowMouseOut.bind(this);
-    this.handleDelRowMouseOver = this.handleDelRowMouseOver.bind(this);
-    this.handleDelRow = this.handleDelRow.bind(this);
-    this.handleDelColMouseOut = this.handleDelColMouseOut.bind(this);
-    this.handleDelColMouseOver = this.handleDelColMouseOver.bind(this);
-    this.handleDelColumn = this.handleDelColumn.bind(this);
-    this.handleSquareMouseOut = this.handleSquareMouseOut.bind(this);
-
   }
 
   componentWillMount() {
@@ -38,58 +37,48 @@ class Board extends React.PureComponent {
     for (let i = 0; i < height; i++) {
       matrix[i] = [];
       for (let j = 0; j < width; j++) { 
-        matrix[i][j] = ( (+i+1) + '/' + (j+1));
+        matrix[i][j] = ( (+i+1) + '/' + (j+1) );
       }
     }
     
     this.setState({matrix: matrix});
  }
-  static defaultProps = {
-    initialWidth: 4,
-    initialHeight: 4,
-    cellSize: 50
-  }
-
-  handleDelRow() {
+ 
+  handleDelRow = () => {
     const { height, curRow, matrix } = this.state;
+    let newMatrix = matrix.slice();
 
-    if (height <= 1) {
-      this.setState({visibilityDelRowBtn: 'hidden'});
-      return;
-    }
-    this.setState({ height: height - 1 });
-    let newMatrix = matrix;
+    if (height <= 1) { return }
+   
     newMatrix.splice(curRow, 1);
-    this.setState({ matrix: newMatrix });
-
-    if (curRow === height) {
-      this.setState({visibilityDelRowBtn: 'hidden'})
-    }
+   
+    this.setState({
+      visibilityDelRowBtn: ( (curRow === height - 1) || (height <= 2) ) ? false : true,
+      height: height - 1,
+      matrix: newMatrix,
+      isDelRowDis: (curRow === height - 1) ? true : false
+    });
   }
 
-  handleDelColumn() {
+  handleDelColumn = () => {
     const { width, curCol, matrix, height } = this.state;
+    let newMatrix = matrix.slice();
 
-    if (width <= 1) {
-      this.setState({visibilityDelColBtn: 'hidden' })
-      return;
-    }
+    if (width <= 1) { return }
 
     for (let i = 0; i < height; i++) {
-      matrix[i].splice(curCol, 1);
+      newMatrix[i].splice(curCol, 1);
     }
 
-    this.setState({ 
+    this.setState({
+      visibilityDelColBtn: (width <= 2 ) || (curCol === width - 1) ? false : true,
       width: width - 1,
-      matrix: matrix 
-     });
-
-    if (curCol === width) {
-      this.setState({visibilityDelColBtn: 'hidden'})
-    }
+      matrix: newMatrix,
+      isDelColDis: (curCol === width - 1) ? true : false
+    });
   }
 
-  createMatrix(isAddRow, isAddCol) {
+  createMatrix = (isAddRow, isAddCol) => {
     const { width, height } = this.state;
     let matrix = [];
     
@@ -103,56 +92,52 @@ class Board extends React.PureComponent {
     this.setState({matrix: matrix});
   }
 
-  handleAddColumn() {
+  handleAddColumn = () => {
     this.setState({ width: this.state.width + 1 });
     this.createMatrix(false, true);
     
   }
 
-  handleAddRow() {
+  handleAddRow = () => {
     this.setState({ height: this.state.height + 1 });
     this.createMatrix(true, false);
   }
 
-  handleSquareMouseOver(row, col) {
-    if (this.state.width !== 1) {
-      this.setState({visibilityDelColBtn: 'visible'});
-    }
-
-    if (this.state.height !== 1) {
-      this.setState({visibilityDelRowBtn: 'visible'});
-    }
-
+  handleSquareMouseOver = (row, col) => {
     this.setState({ 
+      visibilityDelColBtn: (this.state.width !== 1) ? true : false,
+      isDelColDis: (this.state.width !== 1) ? false : true,
+      visibilityDelRowBtn: (this.state.height !== 1) ? true : false,
+      isDelRowDis: (this.state.height !== 1) ? false : true,
       curCol: col,
       curRow: row 
     });    
   }
 
-  handleSquareMouseOut() {
+  handleSquareMouseOut = () => {
     this.setState({
-      visibilityDelColBtn: 'hidden',
-      visibilityDelRowBtn: 'hidden'
+      visibilityDelColBtn: false,
+      visibilityDelRowBtn: false
      });
   }
 
-  handleDelColMouseOver() {
-    this.setState({visibilityDelColBtn: 'visible'});
+  handleDelColMouseOver = () => {
+    this.setState({visibilityDelColBtn: true});
   }
 
-  handleDelRowMouseOver() {
-    this.setState({visibilityDelRowBtn: 'visible'});
+  handleDelRowMouseOver = () => {
+    this.setState({visibilityDelRowBtn: true});
   }
 
-  handleDelColMouseOut() {
-    this.setState({visibilityDelColBtn: 'hidden'});
+  handleDelColMouseOut = () => {
+    this.setState({visibilityDelColBtn: false});
   }
 
-  handleDelRowMouseOut() {
-    this.setState({visibilityDelRowBtn: 'hidden'})
+  handleDelRowMouseOut = () => {
+    this.setState({visibilityDelRowBtn: false})
   }
 
-  renderSquares() {
+  renderSquares = () => {
     const { cellSize, height, width, matrix } = this.state;
     let squares = [];
     
@@ -215,6 +200,7 @@ class Board extends React.PureComponent {
           top={-marginTop + 8}
           left={leftDelBtn}
           children={"-"}
+          disabled={this.state.isDelColDis}
         />
         <Button
           visibility={visibilityDelRowBtn}
@@ -225,8 +211,10 @@ class Board extends React.PureComponent {
           onMouseOut={this.handleDelRowMouseOut}
           top={topDelBtn}
           children={"-"}
+          disabled={this.state.isDelRowDis}
         />
         <Button
+          visibility={true}
           className="addColumn"
           cellSize={cellSize}
           onClick={this.handleAddColumn}
@@ -235,6 +223,7 @@ class Board extends React.PureComponent {
           children={"+"}
         />
         <Button
+          visibility={true}
           className="addRow"
           cellSize={cellSize}
           onClick={this.handleAddRow}

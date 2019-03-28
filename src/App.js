@@ -5,65 +5,68 @@ import "./App.css";
 class App extends React.PureComponent {
   constructor(props) {
     super(props);
-
-    // this.onMouseUp = this.onMouseUp.bind(this);
-    // this.onDragStart = this.onDragStart.bind(this);
-
+    this.state = {
+      left: 0,
+      top: 0,
+      initialWidth: 4,
+      initialHeight: 4,
+      cellSize: 50
+    }
     this.myInput = React.createRef();
   }
 
+  onMouseDown = (e) => {
 
-  // componentDidMount () {
-  //   console.log(this.myInput.current.offsetWidth);
-  // }
+    if ( 'btn' === e.target.className.substr(0, 3)) { return }
 
-  // onMouseDown(e) {
+    let shiftX = e.pageX - this.myInput.current.getBoundingClientRect().left;
+    let shiftY = e.pageY - this.myInput.current.getBoundingClientRect().top;
 
-  //   this.moveAt(e);
+    this.moveAt(e);
+  
+    document.onmousemove = (e) => this.onMouseMoveHandler(e, shiftX, shiftY);
     
-   
-  //   document.onmousemove = (e) => this.onMouseMoveHandler(e);
-    
-  // }
+  }
 
-  // onMouseMoveHandler(e) {
-  //   this.moveAt(e);
-  // }
+  onMouseMoveHandler = (e, shiftX, shiftY) => {
+    this.moveAt(e, shiftX, shiftY);
+  }
 
-  // onMouseUp() {
-  //   document.onmousemove = null;
-    
-  // }
+  onMouseUp = () => {
+    document.onmousemove = null;  
+  }
 
-  // moveAt(e) {
-  //   this.setState({
-  //     left:  e.pageX - this.myInput.current.offsetWidth / 2 + 'px',
-  //     top: e.pageY - this.myInput.current.offsetHeight / 2 + 'px'
-  //   });
-  // }
+  moveAt = (e, shiftX, shiftY) => {
+    this.setState({
+      left:  e.pageX - shiftX ,
+      top: e.pageY - shiftY - 95
+    });
 
-  // onDragStart() {
-  //   return false;
-  // }
+    console.log(this.state.left + ' ' + this.state.top + '\n' + e.pageX + ' ' + e.pageY);
+  }
+
+  onDragStart = (e) => {
+    return false;
+  }
 
   render() {
     return (
       <div 
       ref={this.myInput}
       className="app"
-      // onMouseDown={this.onMouseDown.bind(this)}
-      // onMouseUp={this.onMouseUp}
-      // onDragStart={this.onDragStart}  
-      // style={{
-      //   left: this.state.left,
-      //   top: this.state.top,
-      //   width: +this.state.initialWidth * this.state.cellSize + 150 + 'px'
-      // }}
+      onMouseDown={this.onMouseDown}
+      onMouseUp={this.onMouseUp}
+      onDragStart={this.onDragStart}  
+      style={{
+        left: this.state.left + 'px',
+        top: this.state.top + 'px',
+        width: +this.state.initialWidth * this.state.cellSize + 'px'
+      }}
       >
         <Board 
-          initialWidth="4" 
-          initialHeight="4"
-          cellSize="50"
+          initialWidth={this.state.initialWidth} 
+          initialHeight={this.state.initialHeight}
+          cellSize={this.state.cellSize}
         />
       </div>
     );
